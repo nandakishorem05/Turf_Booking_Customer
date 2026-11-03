@@ -19,7 +19,7 @@ import {
   Calendar,
   Lock,
 } from "lucide-react";
-import { MOCK_TURFS, MockTurf } from "@/lib/mock-data";
+import { MOCK_TURFS } from "@/lib/mock-data";
 import { TurfBookLogo } from "@/components/turfbook-logo";
 import { formatINR } from "@/lib/utils";
 
@@ -75,25 +75,26 @@ export default function HomePage() {
   }, [selectedCity, selectedSport, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#F6F8F6]">
+    <div className="min-h-screen bg-[#F6F8F6] w-full max-w-full overflow-x-hidden">
       {/* ── Top Header ── */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
-          <div className="flex items-center gap-4">
-            <Link href="/">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-2.5 sm:px-6 sm:py-3.5">
+          {/* Left: Brand Logo & Location */}
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <Link href="/" className="shrink-0">
               <TurfBookLogo size="sm" showTagline={false} />
             </Link>
 
-            {/* Location selector dropdown */}
-            <div className="relative">
+            {/* Location selector dropdown (Clean single arrow) */}
+            <div className="relative shrink min-w-0">
               <label htmlFor="city-select" className="sr-only">Select City</label>
-              <div className="flex items-center gap-1.5 rounded-full bg-slate-100/80 px-3 py-1.5 text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-200/80 transition cursor-pointer">
-                <MapPin size={14} className="text-[#00D066]" />
+              <div className="flex items-center gap-1 rounded-full bg-slate-100/90 px-2.5 py-1 text-xs font-bold text-slate-800 hover:bg-slate-200 transition cursor-pointer">
+                <MapPin size={13} className="text-[#00D066] shrink-0" />
                 <select
                   id="city-select"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="bg-transparent border-none outline-none font-bold cursor-pointer text-xs sm:text-sm pr-1"
+                  className="appearance-none bg-transparent border-none outline-none font-bold cursor-pointer text-xs max-w-[85px] sm:max-w-[130px] truncate pr-0.5"
                 >
                   {CITIES.map((c) => (
                     <option key={c} value={c}>
@@ -102,23 +103,22 @@ export default function HomePage() {
                   ))}
                   <option value="All">All Cities</option>
                 </select>
-                <ChevronDown size={13} className="text-slate-400" />
+                <ChevronDown size={12} className="text-slate-400 shrink-0 pointer-events-none" />
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Notifications Bell */}
+          {/* Right: Notifications & Desktop Nav */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               aria-label="Notifications"
-              className="relative p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+              className="relative p-1.5 sm:p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
             >
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#00D066] ring-2 ring-white animate-pulse" />
+              <Bell size={17} />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#00D066] ring-2 ring-white animate-pulse" />
             </button>
 
-            {/* Navigation links */}
-            <nav className="hidden sm:flex items-center gap-4 text-sm font-semibold">
+            <nav className="hidden sm:flex items-center gap-3 text-xs sm:text-sm font-semibold">
               <Link
                 href="/bookings"
                 className="text-slate-700 hover:text-[#00D066] transition"
@@ -127,7 +127,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/login"
-                className="rounded-full bg-[#042618] px-5 py-2 text-white font-bold text-xs sm:text-sm hover:bg-[#0A3F26] transition shadow-sm"
+                className="rounded-full bg-[#042618] px-4 py-1.5 text-white font-bold text-xs hover:bg-[#0A3F26] transition shadow-sm"
               >
                 Sign In
               </Link>
@@ -136,39 +136,39 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 pt-5 pb-16 space-y-6">
+      <main className="mx-auto max-w-6xl px-3.5 sm:px-6 pt-3.5 pb-20 sm:pb-12 space-y-4 sm:space-y-6">
         {/* ── Screen 2: Hero Carousel Banner ── */}
-        <section className="relative overflow-hidden rounded-3xl shadow-card">
-          <div className="relative h-56 sm:h-72 md:h-80 w-full overflow-hidden">
+        <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-card">
+          <div className="relative h-48 sm:h-64 md:h-72 w-full overflow-hidden">
             <Image
               src="/images/turfs/hero_stadium.jpg"
               alt="Night Football Turf Arena with stadium floodlights"
               fill
               priority
-              className="object-cover object-center scale-105 hover:scale-100 transition-transform duration-700"
+              className="object-cover object-center scale-105"
             />
             {/* Cinematic Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#042618]/95 via-[#042618]/75 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#042618]/95 via-[#042618]/80 to-transparent" />
 
             {/* Banner Content */}
-            <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 max-w-lg">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#00D066]/20 border border-[#00D066]/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#C9F363] mb-3 w-fit backdrop-blur-sm">
-                <Sparkles size={12} />
+            <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 max-w-sm sm:max-w-md">
+              <div className="inline-flex items-center gap-1 rounded-full bg-[#00D066]/20 border border-[#00D066]/40 px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#C9F363] mb-2 w-fit backdrop-blur-sm">
+                <Sparkles size={11} />
                 Special Offer • Up to 20% Off
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
                 Play More. <br />
                 <span className="text-[#00D066]">Pay Less.</span>
               </h1>
-              <p className="mt-2 text-xs sm:text-sm text-white/80 line-clamp-2">
-                Discover world-class floodlit football pitches, box cricket nets & badminton courts.
+              <p className="mt-1 text-[11px] sm:text-xs text-white/80 line-clamp-2">
+                Discover world-class floodlit football pitches, cricket nets & courts.
               </p>
-              <div className="mt-4">
+              <div className="mt-3">
                 <Link
                   href="/turfs"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#00D066] px-6 py-2.5 font-bold text-slate-950 text-sm shadow-glow hover:bg-[#02b85a] transition hover:translate-x-1"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#00D066] px-4 py-1.5 sm:px-5 sm:py-2 font-bold text-slate-950 text-xs sm:text-sm shadow-glow hover:bg-[#02b85a] transition"
                 >
-                  Book Now <ArrowRight size={16} />
+                  Book Now <ArrowRight size={14} />
                 </Link>
               </div>
             </div>
@@ -176,20 +176,20 @@ export default function HomePage() {
         </section>
 
         {/* ── Search Bar ── */}
-        <div className="relative">
-          <div className="relative flex items-center rounded-2xl bg-white px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-slate-100 focus-within:border-[#00D066] focus-within:ring-2 focus-within:ring-[#00D066]/20 transition">
-            <Search size={20} className="text-slate-400 shrink-0 mr-3" />
+        <div>
+          <div className="flex items-center rounded-2xl bg-white px-3.5 py-2.5 shadow-[0_4px_16px_rgba(0,0,0,0.04)] border border-slate-100 focus-within:border-[#00D066] focus-within:ring-2 focus-within:ring-[#00D066]/20 transition">
+            <Search size={18} className="text-slate-400 shrink-0 mr-2.5" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search turfs near you by name, area or sport..."
-              className="w-full bg-transparent text-sm sm:text-base outline-none text-slate-900 placeholder:text-slate-400"
+              placeholder="Search turfs near you..."
+              className="w-full bg-transparent text-xs sm:text-sm outline-none text-slate-900 placeholder:text-slate-400"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="text-xs font-bold text-slate-400 hover:text-slate-700 px-2 py-1"
+                className="text-[11px] font-bold text-slate-400 hover:text-slate-700 px-1"
               >
                 Clear
               </button>
@@ -197,32 +197,35 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── Sports Categories (Horizontal Scrollable Pills) ── */}
+        {/* ── Sports Categories (Matches Screen 2 of Showcase Poster) ── */}
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base sm:text-lg font-black text-slate-900">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm sm:text-base font-black text-slate-900">
               Categories
             </h2>
-            <span className="text-xs font-bold text-[#00D066]">
+            <span className="text-[11px] font-bold text-[#00D066]">
               {selectedSport === "all" ? "All Sports" : selectedSport}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none no-scrollbar">
+          {/* Clean Horizontal Grid with Hidden Scrollbar */}
+          <div className="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
             {SPORTS_CATEGORIES.map((sport) => {
               const isSelected = selectedSport === sport.id;
               return (
                 <button
                   key={sport.id}
                   onClick={() => setSelectedSport(sport.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all shadow-sm ${
+                  className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all shrink-0 min-w-[68px] sm:min-w-[80px] ${
                     isSelected
-                      ? "bg-[#042618] text-white shadow-md scale-105 ring-2 ring-[#00D066]"
-                      : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-100"
+                      ? "bg-[#042618] text-white shadow-md scale-102 ring-2 ring-[#00D066]"
+                      : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-100 shadow-sm"
                   }`}
                 >
-                  <span className="text-lg">{sport.icon}</span>
-                  <span>{sport.name}</span>
+                  <span className="text-2xl mb-1">{sport.icon}</span>
+                  <span className="text-[11px] font-bold tracking-tight">
+                    {sport.name}
+                  </span>
                 </button>
               );
             })}
@@ -231,28 +234,28 @@ export default function HomePage() {
 
         {/* ── Popular Turfs Section ── */}
         <section>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                 Popular Turfs
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500">
-                Verified arenas with live slot availability in {selectedCity}
+              <p className="text-[11px] sm:text-xs text-slate-500">
+                Verified arenas in {selectedCity}
               </p>
             </div>
             <Link
               href="/turfs"
-              className="flex items-center gap-1 text-xs sm:text-sm font-bold text-[#00D066] hover:text-[#02b85a] transition"
+              className="flex items-center gap-1 text-xs font-bold text-[#00D066] hover:text-[#02b85a] transition"
             >
-              See All <ArrowRight size={14} />
+              See All <ArrowRight size={13} />
             </Link>
           </div>
 
           {filteredTurfs.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
-              <p className="text-base font-bold text-slate-700">No turfs found</p>
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center">
+              <p className="text-sm font-bold text-slate-700">No turfs found</p>
               <p className="mt-1 text-xs text-slate-400">
-                Try selecting &quot;All Cities&quot; or clearing your sport filter.
+                Try selecting &quot;All Cities&quot; or clearing your filter.
               </p>
               <button
                 onClick={() => {
@@ -260,13 +263,13 @@ export default function HomePage() {
                   setSelectedSport("all");
                   setSearchQuery("");
                 }}
-                className="mt-4 rounded-full bg-[#00D066] px-5 py-2 text-xs font-bold text-slate-950"
+                className="mt-3 rounded-full bg-[#00D066] px-4 py-1.5 text-xs font-bold text-slate-950"
               >
                 Reset Filters
               </button>
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTurfs.map((turf) => {
                 const isFav = !!favorites[turf.id];
                 const mainImage =
@@ -276,10 +279,10 @@ export default function HomePage() {
                   <Link
                     key={turf.id}
                     href={`/turfs/${turf.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-3xl bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-slate-100"
+                    className="group flex flex-col overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-slate-100"
                   >
                     {/* Turf Image Thumbnail */}
-                    <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                    <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-slate-100">
                       <Image
                         src={mainImage}
                         alt={turf.name}
@@ -289,51 +292,49 @@ export default function HomePage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-                      {/* Rating Badge Overlay (Top Right) */}
-                      <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-1 text-xs font-bold text-white shadow-sm">
-                        <Star size={13} className="text-amber-400 fill-amber-400" />
+                      {/* Rating Badge Overlay */}
+                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md px-2 py-0.5 text-[11px] font-bold text-white shadow-sm">
+                        <Star size={11} className="text-amber-400 fill-amber-400" />
                         <span>{turf.rating.toFixed(1)}</span>
                       </div>
 
-                      {/* Distance Badge (Top Left) */}
-                      <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-white/90 backdrop-blur-md px-2.5 py-1 text-xs font-bold text-slate-800 shadow-sm">
-                        <MapPin size={12} className="text-[#00D066]" />
+                      {/* Distance Badge */}
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1 rounded-full bg-white/95 backdrop-blur-md px-2 py-0.5 text-[11px] font-bold text-slate-800 shadow-sm">
+                        <MapPin size={11} className="text-[#00D066]" />
                         <span>{turf.distance}</span>
                       </div>
 
-                      {/* Favorite Button (Bottom Right) */}
+                      {/* Favorite Button */}
                       <button
                         onClick={(e) => toggleFavorite(turf.id, e)}
                         aria-label="Add to favorites"
-                        className="absolute bottom-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-md text-slate-700 hover:text-red-500 hover:bg-white transition shadow-sm"
+                        className="absolute bottom-2.5 right-2.5 p-1.5 rounded-full bg-white/95 backdrop-blur-md text-slate-700 hover:text-red-500 hover:bg-white transition shadow-sm"
                       >
                         <Heart
-                          size={16}
+                          size={15}
                           className={isFav ? "fill-red-500 text-red-500" : ""}
                         />
                       </button>
                     </div>
 
                     {/* Card Content */}
-                    <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
+                    <div className="flex flex-1 flex-col justify-between p-3.5 sm:p-5">
                       <div>
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-[#00D066] transition">
-                            {turf.name}
-                          </h3>
-                        </div>
+                        <h3 className="font-extrabold text-sm sm:text-base text-slate-900 group-hover:text-[#00D066] transition">
+                          {turf.name}
+                        </h3>
 
-                        <p className="mt-1 flex items-center gap-1 text-xs text-slate-500">
-                          <MapPin size={13} className="shrink-0 text-slate-400" />
+                        <p className="mt-1 flex items-center gap-1 text-[11px] sm:text-xs text-slate-500 truncate">
+                          <MapPin size={12} className="shrink-0 text-slate-400" />
                           <span className="truncate">{turf.address}</span>
                         </p>
 
                         {/* Facility tags */}
-                        <div className="mt-3 flex flex-wrap gap-1.5">
+                        <div className="mt-2.5 flex flex-wrap gap-1">
                           {turf.turf_facilities.slice(0, 3).map((f) => (
                             <span
                               key={f.facilities.name}
-                              className="rounded-lg bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600"
+                              className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600"
                             >
                               {f.facilities.name}
                             </span>
@@ -342,20 +343,20 @@ export default function HomePage() {
                       </div>
 
                       {/* Price & CTA */}
-                      <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+                      <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5">
                         <div>
-                          <p className="text-[10px] uppercase font-bold text-slate-400">
+                          <p className="text-[9px] uppercase font-bold text-slate-400">
                             Starting at
                           </p>
-                          <p className="text-base sm:text-lg font-black text-[#042618]">
+                          <p className="text-sm sm:text-base font-black text-[#042618]">
                             {formatINR(turf.hourly_price)}
-                            <span className="text-xs font-normal text-slate-400">
+                            <span className="text-[10px] font-normal text-slate-400">
                               /hr
                             </span>
                           </p>
                         </div>
 
-                        <span className="rounded-xl bg-[#00D066]/10 px-3.5 py-1.5 text-xs font-bold text-[#042618] group-hover:bg-[#00D066] group-hover:text-slate-950 transition">
+                        <span className="rounded-xl bg-[#00D066]/10 px-3 py-1 text-[11px] font-bold text-[#042618] group-hover:bg-[#00D066] group-hover:text-slate-950 transition">
                           Book Now
                         </span>
                       </div>
@@ -368,63 +369,63 @@ export default function HomePage() {
         </section>
 
         {/* ── Showcase Trust & Value Props Strip (Matching Showcase Poster) ── */}
-        <section className="rounded-3xl bg-[#042618] p-6 sm:p-8 text-white shadow-xl">
-          <div className="text-center max-w-xl mx-auto mb-6">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+        <section className="rounded-2xl sm:rounded-3xl bg-[#042618] p-4 sm:p-7 text-white shadow-xl">
+          <div className="text-center max-w-sm sm:max-w-xl mx-auto mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-snug">
               Book Your Favourite Turf <br />
               <span className="text-[#00D066]">Anytime, Anywhere!</span>
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300">
+            <p className="mt-1 text-[10px] sm:text-xs text-slate-300">
               India&apos;s fastest sports turf discovery and reservation platform.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="p-2.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-2">
-                <Search size={22} />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            <div className="flex flex-col items-center text-center p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="p-1.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-1">
+                <Search size={18} />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-white">Discover Nearby</h3>
-              <p className="text-[11px] text-slate-300 mt-0.5">Top-rated local pitches</p>
+              <h3 className="font-bold text-[11px] sm:text-xs text-white">Discover Nearby</h3>
+              <p className="text-[10px] text-slate-300 mt-0.5">Top-rated pitches</p>
             </div>
 
-            <div className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="p-2.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-2">
-                <Calendar size={22} />
+            <div className="flex flex-col items-center text-center p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="p-1.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-1">
+                <Calendar size={18} />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-white">Live Availability</h3>
-              <p className="text-[11px] text-slate-300 mt-0.5">Instant real-time slots</p>
+              <h3 className="font-bold text-[11px] sm:text-xs text-white">Live Availability</h3>
+              <p className="text-[10px] text-slate-300 mt-0.5">Real-time slots</p>
             </div>
 
-            <div className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="p-2.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-2">
-                <Lock size={22} />
+            <div className="flex flex-col items-center text-center p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="p-1.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-1">
+                <Lock size={18} />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-white">Secure Payments</h3>
-              <p className="text-[11px] text-slate-300 mt-0.5">UPI, Cards & Razorpay</p>
+              <h3 className="font-bold text-[11px] sm:text-xs text-white">Secure Payments</h3>
+              <p className="text-[10px] text-slate-300 mt-0.5">UPI & Cards</p>
             </div>
 
-            <div className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="p-2.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-2">
-                <Bell size={22} />
+            <div className="flex flex-col items-center text-center p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="p-1.5 rounded-full bg-[#00D066]/20 text-[#00D066] mb-1">
+                <Bell size={18} />
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-white">Instant Updates</h3>
-              <p className="text-[11px] text-slate-300 mt-0.5">SMS & email confirmation</p>
+              <h3 className="font-bold text-[11px] sm:text-xs text-white">Instant Updates</h3>
+              <p className="text-[10px] text-slate-300 mt-0.5">SMS & email</p>
             </div>
           </div>
 
-          <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-around gap-3 text-xs font-semibold text-slate-300">
-            <span className="inline-flex items-center gap-1.5">
-              <Zap size={14} className="text-[#C9F363]" /> Instant Booking
+          <div className="mt-4 pt-3 border-t border-white/10 grid grid-cols-2 sm:flex sm:justify-around gap-2 text-[10px] sm:text-xs font-semibold text-slate-300">
+            <span className="inline-flex items-center gap-1">
+              <Zap size={12} className="text-[#C9F363]" /> Instant Booking
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck size={14} className="text-[#00D066]" /> 100% Secure
+            <span className="inline-flex items-center gap-1">
+              <ShieldCheck size={12} className="text-[#00D066]" /> 100% Secure
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Trophy size={14} className="text-amber-400" /> Top Rated Turfs
+            <span className="inline-flex items-center gap-1">
+              <Trophy size={12} className="text-amber-400" /> Top Rated Turfs
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Smartphone size={14} className="text-[#00D066]" /> Play on Web & App
+            <span className="inline-flex items-center gap-1">
+              <Smartphone size={12} className="text-[#00D066]" /> Play on Web & App
             </span>
           </div>
         </section>
