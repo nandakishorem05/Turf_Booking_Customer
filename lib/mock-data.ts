@@ -1,140 +1,226 @@
-// ─── SHARED MOCK DATA (demo mode only) ────────────────────────────────────────
-// Used by all three apps when NEXT_PUBLIC_DEMO_MODE=true
+// ─── SHARED MOCK DATA (demo mode & showcase fallback) ───────────────────────
+// Matches the TurfBook Showcase design
 
-export const MOCK_TURFS = [
+export interface TurfImage {
+  public_url: string | null;
+  sort_order: number;
+}
+
+export interface TurfFacility {
+  facilities: { name: string };
+}
+
+export interface TurfSport {
+  sports: { name: string };
+}
+
+export interface TurfReview {
+  rating: number;
+  comment: string;
+  created_at: string;
+  profiles?: { full_name?: string };
+}
+
+export interface MockTurf {
+  id: string;
+  name: string;
+  slug: string;
+  city: string;
+  address: string;
+  distance: string;
+  description: string;
+  hourly_price: number;
+  rating: number;
+  review_count: number;
+  status: string;
+  owner_id: string;
+  phone: string;
+  cancellation_hours: number;
+  turf_images: TurfImage[];
+  turf_sports: TurfSport[];
+  turf_facilities: TurfFacility[];
+  operating_hours: string[];
+  reviews: TurfReview[];
+}
+
+export const MOCK_TURFS: MockTurf[] = [
   {
     id: "turf-001",
-    name: "The Green Arena",
-    slug: "the-green-arena",
-    city: "Mumbai",
-    address: "Andheri West, Mumbai",
-    description: "A premium 5-a-side football turf with top-quality astroturf surface and professional floodlights. Perfect for evening matches with friends or corporate tournaments.",
-    hourly_price: 1200,
-    rating: 4.8,
-    review_count: 124,
+    name: "GreenLeaf Turf",
+    slug: "greenleaf-turf",
+    city: "Kochi",
+    address: "Marine Drive, Kochi, Kerala",
+    distance: "2.5 km",
+    description: "Premium quality artificial turf with excellent facilities, FIFA-grade shock-absorbing turf, and professional high-intensity floodlighting. Perfect for evening 5-a-side football matches, cricket tournaments, and corporate friendlies.",
+    hourly_price: 800,
+    rating: 4.6,
+    review_count: 1240,
     status: "approved",
     owner_id: "owner-001",
     phone: "9876543210",
     cancellation_hours: 24,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Football" } }, { sports: { name: "Cricket" } }],
-    turf_facilities: [
-      { facilities: { name: "Parking" } },
-      { facilities: { name: "Floodlights" } },
-      { facilities: { name: "Changing rooms" } },
+    turf_images: [
+      { public_url: "/images/turfs/greenleaf.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/hero_stadium.jpg", sort_order: 1 },
     ],
-    operating_hours: [],
+    turf_sports: [
+      { sports: { name: "Football" } },
+      { sports: { name: "Cricket" } },
+    ],
+    turf_facilities: [
+      { facilities: { name: "Football" } },
+      { facilities: { name: "Cricket" } },
+      { facilities: { name: "Floodlights" } },
+      { facilities: { name: "Parking" } },
+      { facilities: { name: "Locker rooms" } },
+      { facilities: { name: "Drinking water" } },
+    ],
+    operating_hours: ["06:00 - 23:00"],
     reviews: [
-      { rating: 5, comment: "Absolutely world-class surface! The floodlights are brilliant for night games.", created_at: "2026-10-20T18:00:00Z", profiles: { full_name: "Arjun Mehta" } },
-      { rating: 5, comment: "Best turf in Andheri. Great changing rooms and helpful staff.", created_at: "2026-10-15T17:00:00Z", profiles: { full_name: "Priya Sharma" } },
-      { rating: 4, comment: "Good pitch quality. Parking can get tight on weekends.", created_at: "2026-10-10T16:00:00Z", profiles: { full_name: "Rohan Patel" } },
+      { rating: 5, comment: "Top class pitch! The floodlights are brilliant for evening matches.", created_at: "2026-10-20T18:00:00Z", profiles: { full_name: "Rahul Nair" } },
+      { rating: 5, comment: "Best turf in Kochi. Ample parking and clean changing rooms.", created_at: "2026-10-15T17:00:00Z", profiles: { full_name: "Fahad Varghese" } },
+      { rating: 4, comment: "Great bounce on the ball and friendly staff. Highly recommended.", created_at: "2026-10-10T16:00:00Z", profiles: { full_name: "Anas K." } },
     ],
   },
   {
     id: "turf-002",
-    name: "SportZone Elite",
-    slug: "sportzone-elite",
-    city: "Pune",
-    address: "Koregaon Park, Pune",
-    description: "Multi-sport facility featuring large cricket nets, badminton courts, and a 7-a-side football pitch. Climate-controlled indoor area available.",
+    name: "SkySports Arena",
+    slug: "skysports-arena",
+    city: "Kochi",
+    address: "Kaloor Stadium Link Rd, Kochi, Kerala",
+    distance: "3.8 km",
+    description: "Multi-sport facility featuring international standard cricket nets, enclosed safety netting, and dual multi-purpose pitches with laser-level turf.",
     hourly_price: 900,
-    rating: 4.5,
-    review_count: 87,
+    rating: 4.7,
+    review_count: 850,
     status: "approved",
     owner_id: "owner-002",
     phone: "9765432109",
     cancellation_hours: 12,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Cricket" } }, { sports: { name: "Badminton" } }],
+    turf_images: [
+      { public_url: "/images/turfs/cricket.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/greenleaf.jpg", sort_order: 1 },
+    ],
+    turf_sports: [
+      { sports: { name: "Cricket" } },
+      { sports: { name: "Football" } },
+    ],
     turf_facilities: [
+      { facilities: { name: "Cricket" } },
+      { facilities: { name: "Floodlights" } },
       { facilities: { name: "Cafeteria" } },
       { facilities: { name: "Equipment rental" } },
-      { facilities: { name: "First aid" } },
-      { facilities: { name: "Drinking water" } },
+      { facilities: { name: "Parking" } },
     ],
-    operating_hours: [],
+    operating_hours: ["06:00 - 24:00"],
     reviews: [
-      { rating: 5, comment: "Great multi-sport setup. Love the cafeteria after a long session.", created_at: "2026-10-18T12:00:00Z", profiles: { full_name: "Sneha Joshi" } },
-      { rating: 4, comment: "Cricket nets are excellent. Booking process was very smooth.", created_at: "2026-10-12T14:00:00Z", profiles: { full_name: "Karan Singh" } },
+      { rating: 5, comment: "Great multi-sport setup. The box cricket pitch is unmatched.", created_at: "2026-10-18T12:00:00Z", profiles: { full_name: "Vishnu Pillai" } },
+      { rating: 4, comment: "Cricket nets are excellent with automated bowling machines.", created_at: "2026-10-12T14:00:00Z", profiles: { full_name: "Midhun Mohan" } },
     ],
   },
   {
     id: "turf-003",
-    name: "Ace Courts",
-    slug: "ace-courts",
-    city: "Bangalore",
-    address: "Indiranagar, Bangalore",
-    description: "Premium tennis and badminton courts with professional synthetic surface. Coaching available on request. Ideal for both beginners and advanced players.",
+    name: "Arena 360",
+    slug: "arena-360",
+    city: "Kochi",
+    address: "Edappally, Kochi, Kerala",
+    distance: "4.2 km",
+    description: "Air-conditioned indoor badminton complex with BWF-approved synthetic court matting, glare-free LED lighting, and electronic scoreboards.",
     hourly_price: 700,
-    rating: 4.3,
-    review_count: 56,
+    rating: 4.5,
+    review_count: 620,
     status: "approved",
     owner_id: "owner-001",
     phone: "9654321098",
     cancellation_hours: 6,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Tennis" } }, { sports: { name: "Badminton" } }],
-    turf_facilities: [
-      { facilities: { name: "Parking" } },
-      { facilities: { name: "Changing rooms" } },
-      { facilities: { name: "Drinking water" } },
+    turf_images: [
+      { public_url: "/images/turfs/badminton.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/hero_stadium.jpg", sort_order: 1 },
     ],
-    operating_hours: [],
+    turf_sports: [
+      { sports: { name: "Badminton" } },
+      { sports: { name: "Tennis" } },
+    ],
+    turf_facilities: [
+      { facilities: { name: "Badminton" } },
+      { facilities: { name: "Air conditioning" } },
+      { facilities: { name: "Locker rooms" } },
+      { facilities: { name: "Drinking water" } },
+      { facilities: { name: "Parking" } },
+    ],
+    operating_hours: ["05:00 - 23:00"],
     reviews: [
-      { rating: 4, comment: "Excellent court surface, very well-maintained.", created_at: "2026-10-22T09:00:00Z", profiles: { full_name: "Divya Rao" } },
+      { rating: 5, comment: "Excellent court grip and no glare from lights. Love playing here.", created_at: "2026-10-22T09:00:00Z", profiles: { full_name: "Sneha Menon" } },
     ],
   },
   {
     id: "turf-004",
-    name: "Urban Kick",
-    slug: "urban-kick",
+    name: "Urban Kick Rooftop",
+    slug: "urban-kick-rooftop",
     city: "Mumbai",
-    address: "Bandra East, Mumbai",
-    description: "Rooftop football facility in the heart of Bandra. 5-a-side only. Stunning city skyline views during evening sessions.",
+    address: "Bandra West, Mumbai, Maharashtra",
+    distance: "1.8 km",
+    description: "Iconic rooftop football arena overlooking Mumbai's illuminated skyline. 5-a-side artificial pitch with high-tension perimeter nets and evening music.",
     hourly_price: 1500,
-    rating: 4.7,
-    review_count: 203,
+    rating: 4.9,
+    review_count: 1420,
     status: "approved",
     owner_id: "owner-002",
     phone: "9543210987",
     cancellation_hours: 24,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Football" } }],
+    turf_images: [
+      { public_url: "/images/turfs/rooftop.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/hero_stadium.jpg", sort_order: 1 },
+    ],
+    turf_sports: [
+      { sports: { name: "Football" } },
+    ],
     turf_facilities: [
+      { facilities: { name: "Football" } },
       { facilities: { name: "Floodlights" } },
       { facilities: { name: "Cafeteria" } },
-      { facilities: { name: "Equipment rental" } },
+      { facilities: { name: "Skyline view" } },
+      { facilities: { name: "Locker rooms" } },
     ],
-    operating_hours: [],
+    operating_hours: ["06:00 - 02:00"],
     reviews: [
-      { rating: 5, comment: "The rooftop view is unreal! Best experience ever.", created_at: "2026-10-25T19:00:00Z", profiles: { full_name: "Aditya Kumar" } },
-      { rating: 5, comment: "Premium feel, great surface. A bit pricey but totally worth it.", created_at: "2026-10-20T20:00:00Z", profiles: { full_name: "Meera Nair" } },
+      { rating: 5, comment: "The rooftop skyline vibe is unreal! Best turf experience in Mumbai.", created_at: "2026-10-25T19:00:00Z", profiles: { full_name: "Aditya Roy" } },
+      { rating: 5, comment: "Super premium feel and crisp astroturf surface.", created_at: "2026-10-20T20:00:00Z", profiles: { full_name: "Natasha Sen" } },
     ],
   },
   {
     id: "turf-005",
-    name: "PlayField Pro",
-    slug: "playfield-pro",
-    city: "Chennai",
-    address: "OMR Road, Chennai",
-    description: "Large open-air sports complex with football, basketball, and cricket facilities. Perfect for large groups and corporate events.",
-    hourly_price: 600,
-    rating: 4.1,
-    review_count: 41,
+    name: "The Green Arena",
+    slug: "the-green-arena",
+    city: "Bangalore",
+    address: "Indiranagar, Bangalore, Karnataka",
+    distance: "3.1 km",
+    description: "Pro-level multisport ground catering to football, box cricket, and basketball. Equipped with ultra-lumen floodlights and spectator seating dugout.",
+    hourly_price: 1100,
+    rating: 4.8,
+    review_count: 980,
     status: "approved",
-    owner_id: "owner-002",
+    owner_id: "owner-001",
     phone: "9432109876",
     cancellation_hours: 12,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Football" } }, { sports: { name: "Basketball" } }, { sports: { name: "Cricket" } }],
+    turf_images: [
+      { public_url: "/images/turfs/hero_stadium.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/greenleaf.jpg", sort_order: 1 },
+    ],
+    turf_sports: [
+      { sports: { name: "Football" } },
+      { sports: { name: "Cricket" } },
+      { sports: { name: "Basketball" } },
+    ],
     turf_facilities: [
       { facilities: { name: "Parking" } },
+      { facilities: { name: "Floodlights" } },
+      { facilities: { name: "Dugout seating" } },
       { facilities: { name: "First aid" } },
-      { facilities: { name: "Drinking water" } },
     ],
-    operating_hours: [],
+    operating_hours: ["06:00 - 23:30"],
     reviews: [
-      { rating: 4, comment: "Great value for money. Lots of space for big groups.", created_at: "2026-10-19T11:00:00Z", profiles: { full_name: "Vikram Sundar" } },
+      { rating: 5, comment: "Spacious and perfectly maintained grass surface.", created_at: "2026-10-19T11:00:00Z", profiles: { full_name: "Gautam Rao" } },
     ],
   },
   {
@@ -142,26 +228,33 @@ export const MOCK_TURFS = [
     name: "Summit Sports Hub",
     slug: "summit-sports-hub",
     city: "Hyderabad",
-    address: "Gachibowli, Hyderabad",
-    description: "State-of-the-art indoor sports facility near HITEC City. Air-conditioned badminton courts with digital scoreboard.",
+    address: "Gachibowli, Hyderabad, Telangana",
+    distance: "5.0 km",
+    description: "Modern climate-controlled multi-court facility with indoor badminton, table tennis, and mini football arena near HITEC City.",
     hourly_price: 800,
     rating: 4.6,
-    review_count: 98,
+    review_count: 590,
     status: "approved",
     owner_id: "owner-001",
     phone: "9321098765",
     cancellation_hours: 6,
-    turf_images: [{ public_url: null, sort_order: 0 }],
-    turf_sports: [{ sports: { name: "Badminton" } }],
+    turf_images: [
+      { public_url: "/images/turfs/badminton.jpg", sort_order: 0 },
+      { public_url: "/images/turfs/cricket.jpg", sort_order: 1 },
+    ],
+    turf_sports: [
+      { sports: { name: "Badminton" } },
+      { sports: { name: "Tennis" } },
+    ],
     turf_facilities: [
+      { facilities: { name: "Air conditioning" } },
       { facilities: { name: "Parking" } },
       { facilities: { name: "Changing rooms" } },
       { facilities: { name: "Cafeteria" } },
-      { facilities: { name: "Equipment rental" } },
     ],
-    operating_hours: [],
+    operating_hours: ["06:00 - 23:00"],
     reviews: [
-      { rating: 5, comment: "AC courts are a blessing in Hyderabad summers!", created_at: "2026-10-21T15:00:00Z", profiles: { full_name: "Rahul Goud" } },
+      { rating: 5, comment: "Air conditioned courts make summer playing effortless!", created_at: "2026-10-21T15:00:00Z", profiles: { full_name: "Tarun Varma" } },
     ],
   },
 ];
@@ -171,37 +264,73 @@ export const MOCK_CUSTOMER_BOOKINGS = [
     id: "booking-001",
     turf_id: "turf-001",
     customer_id: "customer-001",
-    starts_at: "2026-11-05T18:00:00+05:30",
-    ends_at: "2026-11-05T20:00:00+05:30",
-    amount: 2400,
+    starts_at: "2026-04-30T19:00:00+05:30",
+    ends_at: "2026-04-30T20:00:00+05:30",
+    date_display: "Wed, Apr 30, 2026",
+    time_display: "7:00 PM – 8:00 PM (1 hour)",
+    amount: 800,
     status: "confirmed",
     reservation_expires_at: null,
-    created_at: "2026-11-02T10:00:00Z",
-    turfs: { name: "The Green Arena", city: "Mumbai" },
+    created_at: "2026-04-28T10:00:00Z",
+    turfs: {
+      name: "GreenLeaf Turf",
+      city: "Kochi, Kerala",
+      image: "/images/turfs/greenleaf.jpg",
+    },
   },
   {
     id: "booking-002",
     turf_id: "turf-002",
     customer_id: "customer-001",
-    starts_at: "2026-10-28T10:00:00+05:30",
-    ends_at: "2026-10-28T11:00:00+05:30",
+    starts_at: "2026-05-02T18:00:00+05:30",
+    ends_at: "2026-05-02T19:00:00+05:30",
+    date_display: "Sat, May 2, 2026",
+    time_display: "6:00 PM – 7:00 PM (1 hour)",
     amount: 900,
-    status: "completed",
+    status: "upcoming",
     reservation_expires_at: null,
-    created_at: "2026-10-25T09:00:00Z",
-    turfs: { name: "SportZone Elite", city: "Pune" },
+    created_at: "2026-04-29T11:00:00Z",
+    turfs: {
+      name: "SkySports Arena",
+      city: "Kochi, Kerala",
+      image: "/images/turfs/cricket.jpg",
+    },
   },
   {
     id: "booking-003",
+    turf_id: "turf-003",
+    customer_id: "customer-001",
+    starts_at: "2026-05-05T20:00:00+05:30",
+    ends_at: "2026-05-05T21:00:00+05:30",
+    date_display: "Tue, May 5, 2026",
+    time_display: "8:00 PM – 9:00 PM (1 hour)",
+    amount: 700,
+    status: "cancelled",
+    reservation_expires_at: null,
+    created_at: "2026-04-25T09:00:00Z",
+    turfs: {
+      name: "Arena 360",
+      city: "Kochi, Kerala",
+      image: "/images/turfs/badminton.jpg",
+    },
+  },
+  {
+    id: "booking-004",
     turf_id: "turf-004",
     customer_id: "customer-001",
-    starts_at: "2026-11-10T19:00:00+05:30",
-    ends_at: "2026-11-10T20:00:00+05:30",
-    amount: 1350,
-    status: "confirmed",
+    starts_at: "2026-04-20T21:00:00+05:30",
+    ends_at: "2026-04-20T22:00:00+05:30",
+    date_display: "Mon, Apr 20, 2026",
+    time_display: "9:00 PM – 10:00 PM (1 hour)",
+    amount: 1500,
+    status: "completed",
     reservation_expires_at: null,
-    created_at: "2026-11-02T11:00:00Z",
-    turfs: { name: "Urban Kick", city: "Mumbai" },
+    created_at: "2026-04-18T14:00:00Z",
+    turfs: {
+      name: "Urban Kick Rooftop",
+      city: "Mumbai, Maharashtra",
+      image: "/images/turfs/rooftop.jpg",
+    },
   },
 ];
 
@@ -209,115 +338,38 @@ export const MOCK_OWNER_BOOKINGS = [
   {
     id: "booking-004",
     turf_id: "turf-001",
-    turf_name: "The Green Arena",
+    turf_name: "GreenLeaf Turf",
     starts_at: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
     ends_at: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
-    amount: 1200,
+    amount: 800,
     status: "confirmed",
     customer: { full_name: "Arjun Mehta", phone: "9876543200" },
   },
   {
     id: "booking-001",
     turf_id: "turf-001",
-    turf_name: "The Green Arena",
+    turf_name: "GreenLeaf Turf",
     starts_at: "2026-11-05T18:00:00+05:30",
     ends_at: "2026-11-05T20:00:00+05:30",
-    amount: 2400,
+    amount: 1600,
     status: "confirmed",
     customer: { full_name: "Demo Player", phone: "9876543210" },
-  },
-  {
-    id: "booking-006",
-    turf_id: "turf-001",
-    turf_name: "The Green Arena",
-    starts_at: "2026-11-04T09:00:00+05:30",
-    ends_at: "2026-11-04T11:00:00+05:30",
-    amount: 2400,
-    status: "completed",
-    customer: { full_name: "Sneha Joshi", phone: "9765432100" },
-  },
-  {
-    id: "booking-007",
-    turf_id: "turf-003",
-    turf_name: "Ace Courts",
-    starts_at: "2026-11-03T14:00:00+05:30",
-    ends_at: "2026-11-03T15:00:00+05:30",
-    amount: 700,
-    status: "confirmed",
-    customer: { full_name: "Karan Singh", phone: "9654321000" },
-  },
-  {
-    id: "booking-008",
-    turf_id: "turf-006",
-    turf_name: "Summit Sports Hub",
-    starts_at: "2026-11-03T07:00:00+05:30",
-    ends_at: "2026-11-03T08:00:00+05:30",
-    amount: 800,
-    status: "completed",
-    customer: { full_name: "Rahul Goud", phone: "9543210000" },
-  },
-];
-
-export const MOCK_PENDING_TURFS = [
-  {
-    id: "pending-001",
-    name: "Victory Grounds",
-    city: "Delhi",
-    address: "Dwarka Sector 12, Delhi",
-    description: "New 11-a-side football ground with natural grass. Changing rooms and parking available.",
-    hourly_price: 2000,
-    status: "pending",
-    owner_name: "Rahul Gupta",
-    business_name: "Victory Sports Pvt Ltd",
-    owner_phone: "9988776655",
-    created_at: "2026-11-01T08:00:00Z",
-  },
-  {
-    id: "pending-002",
-    name: "Smash Academy",
-    city: "Hyderabad",
-    address: "Kondapur, Hyderabad",
-    description: "Indoor badminton academy with 6 courts. Professional coaching available.",
-    hourly_price: 500,
-    status: "pending",
-    owner_name: "Ananya Reddy",
-    business_name: "Smash Sports LLP",
-    owner_phone: "9877665544",
-    created_at: "2026-11-01T14:00:00Z",
-  },
-  {
-    id: "pending-003",
-    name: "Net Masters",
-    city: "Pune",
-    address: "Wakad, Pune",
-    description: "Cricket nets with bowling machine and turf pitch. Perfect for practice sessions.",
-    hourly_price: 800,
-    status: "pending",
-    owner_name: "Vijay Desai",
-    business_name: "Net Masters Sports",
-    owner_phone: "9766554433",
-    created_at: "2026-11-02T06:00:00Z",
   },
 ];
 
 export const MOCK_ADMIN_STATS = {
-  customers: 2847,
+  customers: 3480,
   owners: 312,
-  bookings_today: 184,
-  platform_revenue: 482650,
+  bookings_today: 242,
+  platform_revenue: 524000,
   pending_approvals: 3,
   active_turfs: 248,
 };
 
-export const MOCK_SETTLEMENTS = [
-  { id: "s-001", owner_name: "Aryan Ventures", amount: 18400, status: "pending", period: "Oct 2026" },
-  { id: "s-002", owner_name: "Victory Sports Pvt Ltd", amount: 32100, status: "paid", period: "Oct 2026" },
-  { id: "s-003", owner_name: "Smash Sports LLP", amount: 9800, status: "pending", period: "Oct 2026" },
-];
-
 export const MOCK_DEMO_USER = {
   id: "customer-001",
   email: "demo@turfbook.com",
-  full_name: "Demo Player",
+  full_name: "Nanda Kishore",
   role: "customer",
+  city: "Kochi",
 };
