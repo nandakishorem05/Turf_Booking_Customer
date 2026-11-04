@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { formatINR } from "@/lib/utils";
 import {
   CheckCircle,
@@ -14,6 +15,8 @@ import {
   ChevronRight,
   ArrowRight,
   X,
+  MapPin,
+  Sparkles,
 } from "lucide-react";
 import { MockTurf } from "@/lib/mock-data";
 
@@ -57,79 +60,104 @@ export function BookingPanel({
 
   const handleProceedToPay = async () => {
     setStatus("reserving");
-    // Step 1: Simulate slot reservation
-    await new Promise((r) => setTimeout(r, 700));
+    await new Promise((r) => setTimeout(r, 600));
     setStatus("paying");
-
-    // Step 2: Simulate Razorpay payment modal / transaction
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1100));
     const randomId = "BK-" + Math.floor(100000 + Math.random() * 900000);
     setBookingRef(randomId);
     setStatus("success");
   };
 
-  if (status === "success") {
-    return (
-      <div className="rounded-3xl bg-white p-6 shadow-card border border-slate-100 text-center space-y-4">
-        <div className="mx-auto w-16 h-16 rounded-full bg-[#00D066]/15 flex items-center justify-center text-[#00D066]">
-          <CheckCircle size={36} />
+  const handleClose = () => {
+    setStatus("idle");
+    if (onCloseMobile) onCloseMobile();
+  };
+
+  // ── Success State Screen ──
+  const successContent = (
+    <div className="text-center space-y-4 py-2">
+      <div className="mx-auto w-16 h-16 rounded-full bg-[#00D066]/15 flex items-center justify-center text-[#00D066] shadow-sm">
+        <CheckCircle size={36} />
+      </div>
+
+      <div>
+        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#00D066] bg-[#00D066]/10 px-2.5 py-0.5 rounded-full mb-1">
+          <Sparkles size={11} /> Payment Successful
         </div>
-        <div>
-          <h2 className="text-2xl font-black text-slate-900">Booking Confirmed!</h2>
-          <p className="text-xs text-slate-500 mt-1">Ref ID: {bookingRef}</p>
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+          Booking Confirmed!
+        </h2>
+        <p className="text-xs text-slate-500 mt-0.5">
+          Booking Reference: <span className="font-mono font-bold text-slate-800">{bookingRef}</span>
+        </p>
+      </div>
+
+      {/* Confirmed Ticket Details Card */}
+      <div className="rounded-2xl bg-slate-50 p-4 text-left space-y-2.5 border border-slate-100 text-xs sm:text-sm">
+        <div className="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+          <span className="text-slate-500">Turf Venue</span>
+          <span className="font-extrabold text-slate-900 text-right">{turf.name}</span>
         </div>
 
-        <div className="rounded-2xl bg-slate-50 p-4 text-left space-y-2 text-xs sm:text-sm">
-          <div className="flex justify-between">
-            <span className="text-slate-500">Turf</span>
-            <span className="font-bold text-slate-900">{turf.name}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-500">Date</span>
-            <span className="font-bold text-slate-900">{selectedDate}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-500">Slot</span>
-            <span className="font-bold text-slate-900">{selectedSlot}</span>
-          </div>
-          <div className="flex justify-between border-t border-slate-200/60 pt-2 font-bold">
-            <span className="text-slate-700">Amount Paid</span>
-            <span className="text-[#00D066]">{formatINR(totalAmount)}</span>
-          </div>
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-slate-500">Location</span>
+          <span className="font-semibold text-slate-700 text-right truncate max-w-[180px]">
+            {turf.address}
+          </span>
         </div>
 
-        <div className="space-y-2 pt-2">
-          <a
-            href="/bookings"
-            className="flex items-center justify-center gap-2 w-full rounded-2xl bg-[#042618] py-3 text-sm font-bold text-white hover:bg-[#0A3F26] transition"
-          >
-            View in My Bookings <ArrowRight size={16} />
-          </a>
-          <button
-            onClick={() => {
-              setStatus("idle");
-              if (onCloseMobile) onCloseMobile();
-            }}
-            className="w-full py-2.5 text-xs font-bold text-slate-500 hover:text-slate-900"
-          >
-            Book Another Slot
-          </button>
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-slate-500">Date</span>
+          <span className="font-bold text-slate-900 text-right">{selectedDate}</span>
+        </div>
+
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-slate-500">Time Slot</span>
+          <span className="font-bold text-[#042618] text-right">
+            {selectedSlot} ({durationHours} hr{durationHours > 1 ? "s" : ""})
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-2 font-black text-sm">
+          <span className="text-slate-800">Amount Paid</span>
+          <span className="text-[#00D066] text-base">{formatINR(totalAmount)}</span>
         </div>
       </div>
-    );
-  }
 
-  const content = (
+      {/* Actions */}
+      <div className="space-y-2 pt-2">
+        <Link
+          href="/bookings"
+          className="flex items-center justify-center gap-2 w-full rounded-2xl bg-[#042618] py-3 text-sm font-bold text-white hover:bg-[#0A3F26] transition shadow-md"
+        >
+          View in My Bookings <ArrowRight size={15} />
+        </Link>
+        <button
+          type="button"
+          onClick={handleClose}
+          className="w-full py-2 text-xs font-bold text-slate-500 hover:text-slate-900"
+        >
+          Done &amp; Close
+        </button>
+      </div>
+    </div>
+  );
+
+  // ── Active Booking Form Screen ──
+  const formContent = (
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-        <h2 className="text-lg font-black text-slate-900">Confirm Booking</h2>
+        <h2 className="text-base sm:text-lg font-black text-slate-900">
+          Confirm Booking
+        </h2>
         {onCloseMobile && (
           <button
+            type="button"
             onClick={onCloseMobile}
-            className="p-1 rounded-full text-slate-400 hover:text-slate-700 md:hidden"
+            className="p-1 rounded-full text-slate-400 hover:text-slate-700 lg:hidden"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         )}
       </div>
@@ -154,13 +182,13 @@ export function BookingPanel({
       </div>
 
       {/* Selected Slot Information */}
-      <div className="rounded-2xl border border-slate-100 bg-white p-3.5 space-y-2.5 text-xs sm:text-sm">
+      <div className="rounded-2xl border border-slate-100 bg-white p-3 space-y-2 text-xs sm:text-sm">
         <div className="flex items-center gap-2 text-slate-700">
-          <Calendar size={16} className="text-[#00D066] shrink-0" />
+          <Calendar size={15} className="text-[#00D066] shrink-0" />
           <span className="font-semibold">{selectedDate}</span>
         </div>
         <div className="flex items-center gap-2 text-slate-700">
-          <Clock size={16} className="text-[#00D066] shrink-0" />
+          <Clock size={15} className="text-[#00D066] shrink-0" />
           <span className="font-semibold">
             {selectedSlot} ({durationHours} {durationHours > 1 ? "hours" : "hour"})
           </span>
@@ -193,11 +221,12 @@ export function BookingPanel({
         {appliedCoupon ? (
           <div className="flex items-center justify-between text-xs">
             <span className="font-bold text-emerald-700 flex items-center gap-1.5">
-              <Tag size={14} /> Coupon {appliedCoupon} applied
+              <Tag size={13} /> Coupon {appliedCoupon} applied
             </span>
             <div className="flex items-center gap-2">
               <span className="font-black text-emerald-700">−{formatINR(discount)}</span>
               <button
+                type="button"
                 onClick={() => setAppliedCoupon(null)}
                 className="text-slate-400 hover:text-slate-700 font-bold"
               >
@@ -215,6 +244,7 @@ export function BookingPanel({
               className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs uppercase outline-none focus:border-[#00D066]"
             />
             <button
+              type="button"
               onClick={handleApplyCoupon}
               className="rounded-xl bg-[#00D066] px-3 py-1.5 text-xs font-bold text-slate-950"
             >
@@ -223,64 +253,65 @@ export function BookingPanel({
           </div>
         ) : (
           <button
+            type="button"
             onClick={() => setShowCouponInput(true)}
             className="flex w-full items-center justify-between text-xs font-bold text-slate-700 hover:text-[#00D066]"
           >
             <span className="flex items-center gap-1.5">
-              <Tag size={14} className="text-[#00D066]" /> Apply Coupon
+              <Tag size={13} className="text-[#00D066]" /> Apply Coupon
             </span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         )}
       </div>
 
       {/* Payment Method Selector */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <p className="text-xs font-bold text-slate-600">Payment Method</p>
         <div className="grid grid-cols-3 gap-2">
           <button
             type="button"
             onClick={() => setPaymentMethod("upi")}
-            className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border text-xs font-bold transition ${
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl border text-xs font-bold transition ${
               paymentMethod === "upi"
                 ? "border-[#00D066] bg-[#00D066]/10 text-slate-900"
                 : "border-slate-200 hover:bg-slate-50 text-slate-600"
             }`}
           >
-            <Smartphone size={18} />
+            <Smartphone size={16} />
             <span>UPI</span>
           </button>
 
           <button
             type="button"
             onClick={() => setPaymentMethod("card")}
-            className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border text-xs font-bold transition ${
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl border text-xs font-bold transition ${
               paymentMethod === "card"
                 ? "border-[#00D066] bg-[#00D066]/10 text-slate-900"
                 : "border-slate-200 hover:bg-slate-50 text-slate-600"
             }`}
           >
-            <CreditCard size={18} />
+            <CreditCard size={16} />
             <span>Card</span>
           </button>
 
           <button
             type="button"
             onClick={() => setPaymentMethod("razorpay")}
-            className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border text-xs font-bold transition ${
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl border text-xs font-bold transition ${
               paymentMethod === "razorpay"
                 ? "border-[#00D066] bg-[#00D066]/10 text-slate-900"
                 : "border-slate-200 hover:bg-slate-50 text-slate-600"
             }`}
           >
-            <ShieldCheck size={18} className="text-[#00D066]" />
+            <ShieldCheck size={16} className="text-[#00D066]" />
             <span>Razorpay</span>
           </button>
         </div>
       </div>
 
       {/* Total Amount Breakdown */}
-      <div className="border-t border-slate-100 pt-3 space-y-1.5 text-xs sm:text-sm">
+      <div className="border-t border-slate-100 pt-2.5 space-y-1 text-xs">
         <div className="flex justify-between text-slate-500">
           <span>Subtotal</span>
           <span>{formatINR(basePrice)}</span>
@@ -291,33 +322,34 @@ export function BookingPanel({
             <span>−{formatINR(discount)}</span>
           </div>
         )}
-        <div className="flex items-center justify-between text-base sm:text-lg font-black text-slate-900 pt-1 border-t border-slate-100">
+        <div className="flex items-center justify-between text-sm sm:text-base font-black text-slate-900 pt-1 border-t border-slate-100">
           <span>Total Amount</span>
-          <span className="text-[#042618] text-xl font-extrabold">{formatINR(totalAmount)}</span>
+          <span className="text-[#042618] text-lg font-extrabold">{formatINR(totalAmount)}</span>
         </div>
       </div>
 
       {/* Action Button */}
       <button
+        type="button"
         onClick={handleProceedToPay}
         disabled={status !== "idle"}
-        className="w-full rounded-2xl bg-[#00D066] py-3.5 px-4 font-black text-slate-950 text-sm sm:text-base shadow-glow hover:bg-[#02b85a] transition disabled:opacity-60 flex items-center justify-center gap-2"
+        className="w-full rounded-2xl bg-[#00D066] py-3 px-4 font-black text-slate-950 text-xs sm:text-sm shadow-glow hover:bg-[#02b85a] transition disabled:opacity-60 flex items-center justify-center gap-2"
       >
         {status === "idle" && "Proceed to Pay"}
         {status === "reserving" && (
           <>
-            <Clock size={16} className="animate-spin" /> Reserving Slot...
+            <Clock size={15} className="animate-spin" /> Reserving Slot...
           </>
         )}
         {status === "paying" && (
           <>
-            <Clock size={16} className="animate-spin" /> Opening Payment...
+            <Clock size={15} className="animate-spin" /> Processing Payment...
           </>
         )}
       </button>
 
-      <p className="flex items-center justify-center gap-1 text-[11px] font-semibold text-slate-400">
-        <ShieldCheck size={13} className="text-[#00D066]" />
+      <p className="flex items-center justify-center gap-1 text-[10px] font-semibold text-slate-400">
+        <ShieldCheck size={12} className="text-[#00D066]" />
         Secured by Razorpay • Instant Confirmation
       </p>
     </div>
@@ -325,16 +357,16 @@ export function BookingPanel({
 
   return (
     <>
-      {/* Desktop Sticky Panel */}
+      {/* Desktop Sticky Panel (Only visible on lg screens) */}
       <aside className="hidden lg:block sticky top-24 rounded-3xl bg-white p-6 shadow-card border border-slate-100">
-        {content}
+        {status === "success" ? successContent : formContent}
       </aside>
 
-      {/* Mobile Drawer Backdrop & Modal */}
+      {/* Mobile Modal Drawer (Only visible on mobile when isOpenMobile is true) */}
       {isOpenMobile && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm lg:hidden p-0 animate-in fade-in">
-          <div className="w-full max-h-[90vh] overflow-y-auto rounded-t-[2.5rem] bg-white p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
-            {content}
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-sm p-0 sm:p-4">
+          <div className="w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-t-[2rem] sm:rounded-3xl bg-white p-5 sm:p-6 shadow-2xl">
+            {status === "success" ? successContent : formContent}
           </div>
         </div>
       )}

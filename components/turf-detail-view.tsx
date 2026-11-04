@@ -345,24 +345,26 @@ export function TurfDetailView({ turf }: TurfDetailViewProps) {
       </main>
 
       {/* ── Mobile Sticky Bottom Bar (Matching Screen 3) ── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-4 py-2.5 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
-          <div>
-            <p className="text-[9px] uppercase font-bold text-slate-400">Total Price</p>
-            <p className="text-base font-black text-[#042618]">
-              {formatINR(turf.hourly_price)}
-              <span className="text-[11px] font-normal text-slate-500"> / hr</span>
-            </p>
-          </div>
+      {!isMobileCheckoutOpen && (
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-4 py-2.5 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+            <div>
+              <p className="text-[9px] uppercase font-bold text-slate-400">Total Price</p>
+              <p className="text-base font-black text-[#042618]">
+                {formatINR(turf.hourly_price)}
+                <span className="text-[11px] font-normal text-slate-500"> / hr</span>
+              </p>
+            </div>
 
-          <button
-            onClick={() => setIsMobileCheckoutOpen(true)}
-            className="flex-1 rounded-2xl bg-[#00D066] py-2.5 px-5 font-black text-slate-950 text-xs sm:text-sm shadow-glow hover:bg-[#02b85a] transition text-center"
-          >
-            Book Now
-          </button>
+            <button
+              onClick={() => setIsMobileCheckoutOpen(true)}
+              className="flex-1 rounded-2xl bg-[#00D066] py-2.5 px-5 font-black text-slate-950 text-xs sm:text-sm shadow-glow hover:bg-[#02b85a] transition text-center"
+            >
+              Book Now
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
